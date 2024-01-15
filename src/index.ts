@@ -3,6 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import mongoose from "mongoose";
 import userRoute from "./routes/user-routes";
+import authRoute from "./routes/auth-routes";
 
 
 mongoose
@@ -24,6 +25,7 @@ app.get('/api/test', async (req: Request, res: Response ) => {
 });
 
 app.use("/api/users", userRoute)
+app.use("/api/auth", authRoute)
 
 app.listen(7000, () => {
     console.log("server running")
