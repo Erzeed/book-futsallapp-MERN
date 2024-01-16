@@ -18,7 +18,10 @@ mongoose
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.use(cors());
+app.use(cors({
+  origin: process.env.ACCES_POINT,
+  credentials: true,
+}));
 
 app.get('/api/test', async (req: Request, res: Response ) => {
     res.status(200).json({ message: "hello" })
