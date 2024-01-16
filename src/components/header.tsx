@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Header = () => {
     return(
-        <div className="sticky top-0 z-50 flex w-full justify-between items-center h-16 bg-[#88304E] px-7 text-white">
+        <div className="sticky top-0 z-50 flex w-full justify-between items-center h-16 bg-[#144FCC] px-7 text-white">
             <div className="logo font-bold text-3xl text-white">
                 <Link to="/">
                     Ez.

@@ -11,11 +11,15 @@
   },
   "dependencies": {
     "autoprefixer": "^10.4.16",
+    "framer-motion": "^10.18.0",
     "postcss": "^8.4.33",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.49.3",
     "react-icons": "^5.0.1",
+    "react-query": "^3.39.3",
     "react-router-dom": "^6.21.2",
+    "react-toastify": "^10.0.2",
     "tailwindcss": "^3.4.1"
   },
   "devDependencies": {
