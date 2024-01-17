@@ -11,9 +11,9 @@ import Toast from "./components/toast"
 function App() {
 
   return (
-    <div className="flex flex-col min-h-screen antialiased">
+    <div className="flex flex-col min-h-screen antialiased w-full">
       <Header />
-      <div className="content">
+      <div className="content w-full">
         <Routes>
           <Route path="/" element={<Home />}  />
           <Route path="/search" element={<Search />}  />

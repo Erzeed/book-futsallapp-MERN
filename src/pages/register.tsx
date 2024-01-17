@@ -4,7 +4,7 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { MdOutlineMail } from "react-icons/md";
 import { LuUser } from "react-icons/lu";
 import { RiUser4Line } from "react-icons/ri";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import api from "../utils/api";
@@ -27,9 +27,10 @@ const Register = () => {
         } = useForm< RegisterType >();
     
     const navigate = useNavigate();
-    
+    const queryClient = useQueryClient();
     const mutation = useMutation(api.Register, {
-        onSuccess: () => {
+        onSuccess: async () => {
+            await queryClient.invalidateQueries("validateToken")
             toast.success("Registrasi berhasil");
             navigate("/")
         },

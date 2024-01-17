@@ -7,14 +7,14 @@ import { Link } from "react-router-dom";
 const Home = () => {
 
     return(
-        <div className="container mb-2 overflow-y-hidden">
-            <div className="bg-[#144FCC] h-[74vh] w-[100vw] text-white flex justify-between items-center px-7">
+        <div className="flex flex-col mb-2">
+            <div className="bg-[#144FCC] h-[74vh] w-full text-white flex justify-between items-center px-7">
                 <div className="desc w-1/2 z-10">
                     <h1 className="text-7xl leading-tight font-bold logo">Discover New Destination</h1>
                     <p className="text-sm tracking-wide">This modern trend looks nice and all, but we fill into the same trap again</p>
                 </div>
-                <div className="w-1/2 h-full">
-                    <img className="bg-cover bg-center" src={hero3} alt="" />
+                <div className="w-1/2 h-full flex justify-center">
+                    <img className="bg-cover h-full w-3/4" src={hero3} alt="" />
                 </div>
             </div>
             <div className="search px-7 gap-5 w-full mt-10 ">
