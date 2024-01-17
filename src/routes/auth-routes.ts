@@ -3,6 +3,7 @@ import { check, validationResult } from "express-validator";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/user-models";
+import verifyToken from "../middleware/auth-middleware";
 
 const router = express.Router();
 
@@ -11,7 +12,7 @@ router.post("/login", [
     check("password", "Password minimun 6 character").isLength({
         min: 6
     })
-], async (resp: Response, req: Request) => {
+], async (req: Request, resp: Response) => {
     const error = validationResult(req);
     if(!error.isEmpty()) {
         return resp.status(400).json({message: error.array()})
@@ -20,11 +21,11 @@ router.post("/login", [
     try {
         let user = await User.findOne({email})
         if(!user) {
-            return resp.status(400).json({ message: "Invalid credentials"})
+            return resp.status(400).json({ message: "Email or Password not found"})
         }
         let isMatch = bcryptjs.compare(password, user.password);
         if(!isMatch) {
-            return resp.status(400).json({message: "Invalid credentials"})
+            return resp.status(400).json({message: "Email or Password not found"})
         }
 
         const token = jwt.sign({ 
@@ -46,6 +47,18 @@ router.post("/login", [
         console.log(error)
         return resp.status(500).json({message: "Error"})
     }
+
+})
+
+router.get('/verify-token', verifyToken, (req: Request, res: Response) => {
+    res.status(200).json({userId: req.userId})
+})
+
+router.post('/logout', (req: Request, res: Response) => {
+    res.cookie("auth_token", "", {
+        expires: new Date(0)
+    })
+    res.send()
 })
 
 export default router

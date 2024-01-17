@@ -4,7 +4,7 @@ import "dotenv/config";
 import mongoose from "mongoose";
 import userRoute from "./routes/user-routes";
 import authRoute from "./routes/auth-routes";
-
+import cookieParser from "cookie-parser";
 
 mongoose
   .connect(process.env.CONNECTDBFUTSALL as string)
@@ -16,6 +16,7 @@ mongoose
   });
 
 const app = express();
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cors({
