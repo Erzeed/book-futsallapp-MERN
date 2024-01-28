@@ -32,7 +32,7 @@ const Header = () => {
             <div className="nav w-30 space-x-4">
                 { isLoggin ? (
                     <>
-                        <Link className="text-xs hover:underline font-bold" to="/admin">
+                        <Link className="text-xs hover:underline font-bold" to="/mycourt">
                             List my property
                         </Link>
                         <Link className="text-xs hover:underline font-bold" to="/admin">

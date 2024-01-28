@@ -5,7 +5,9 @@ import Footer from "./components/footer"
 import Search from "./pages/search"
 import Login from "./pages/login"
 import Register from "./pages/register"
+import MyCourt from "./pages/myCourt"
 import Toast from "./components/toast"
+import EditProfile from "./pages/editProfile"
 
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
           <Route path="/search" element={<Search />}  />
           <Route path="/login" element={<Login />}  />
           <Route path="/register" element={<Register />}  />
+          <Route path="/mycourt" element={<MyCourt />} />
+          <Route path="mycourt/editprofile" element={<EditProfile />}  />
         </Routes>
       </div>
       <Toast />
