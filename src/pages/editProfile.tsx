@@ -1,8 +1,30 @@
 import { Link } from "react-router-dom"
 import { MdOutlineNavigateNext } from "react-icons/md";
 import FormCourt from "../components/form/editcourtform";
+import { useMutation } from "react-query";
+import api from "../utils/api";
+import { toast } from "react-toastify";
+import { useState } from "react";
 
 const EditProfile = () => {
+    const [loading, setLoading] = useState(false)
+
+    const mutation = useMutation(api.addCourt, {
+        onSuccess: async () => {
+            toast.success("Login berhasil");
+            setLoading(false)
+        },
+        onError: (error: Error) => {
+            console.log(error)
+            toast.error(error.message);
+            setLoading(false)
+        }
+    })
+
+    const onHandleSave = (data: FormData) => {
+        setLoading(true)
+        mutation.mutate(data)
+    }
     return(
         <div className="p-7 ">
             <div className="flex items-center space-x-1 font-medium text-base text-zinc-600">
@@ -11,7 +33,7 @@ const EditProfile = () => {
                 <Link to="/mycourt/editprofile" className="hover:text-zinc-800 hover:underline hover:underline-offset-1" >Editcourt</Link>
             </div>
             <div className="content flex justify-center">
-                <FormCourt />
+                <FormCourt onSave={onHandleSave} isLoading={loading}/>
             </div>
         </div>
     )

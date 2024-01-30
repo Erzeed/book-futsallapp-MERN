@@ -9,7 +9,6 @@ export type FormCourtType = {
     addres: string,
     city: string,
     description: string,
-    mapAddres: string[],
     facility: string[],
     typeField: string[],
     openingHours: number,
@@ -17,16 +16,37 @@ export type FormCourtType = {
     imageFile: string,
 }
 
-const FormCourt = () => {
-    const formData = useForm< FormCourtType >()
-    const { handleSubmit } = formData
+type Props = {
+    onSave: (FormCourtType: FormData) => void,
+    isLoading: boolean,
+}
+
+const FormCourt = ({ onSave, isLoading }: Props) => {
+    const formMethods = useForm< FormCourtType >()
+    const { handleSubmit } = formMethods
 
     const onHandleSubmit = (data: FormCourtType) => {
-        console.log(data)
+        const formData = new FormData();
+        formData.append("name", data.name);
+        formData.append("addres", data.addres);
+        formData.append("city", data.city);
+        formData.append("description", data.description);
+        formData.append("openingHours", data.openingHours.toString());
+        formData.append("closingTime", data.closingTime.toString());
+        formData.append("imageFile", data.imageFile[0]);
+
+        data.facility.forEach((facility, index) => {
+            formData.append(`facility[${index}]`, facility)
+        })
+        data.typeField.forEach((typeField, index) => {
+            formData.append(`typeField[${index}]`, typeField)
+        })
+
+        onSave(formData)
     }
 
     return(
-        <FormProvider {...formData}>
+        <FormProvider {...formMethods}>
             <form className="w-full md:w-4/5 mt-5 space-y-5" onSubmit={handleSubmit(onHandleSubmit)}>
                 <GeneralSection />
                 <FacilitySection />
@@ -36,7 +56,7 @@ const FormCourt = () => {
                     <button 
                         className="flex justify-center items-center w-28 h-10 text-xs font-semibold  bg-blue-100 hover:bg-blue-500 hover:text-white rounded-full" 
                         type="submit">
-                            Simpan
+                            {isLoading ? "Simpan...": "Simpan"}
                     </button>
                 </div>
             </form>

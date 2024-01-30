@@ -61,11 +61,39 @@ const api = (() => {
         }
     }
 
+    async function addCourt(data: FormData) {
+        const resp = await fetch(`${BASE_URL}/api/my-field`, {
+            method: "POST",
+            credentials: "include",
+            body: data
+        })
+
+        if (!resp.ok) {
+            throw new Error("error during uploud");
+        }
+
+        return resp.json();
+    }
+
+    async function getProfileCourt() {
+        const resp = await fetch(`${BASE_URL}/api/my-field`, {
+            credentials: "include",
+        })
+
+        if (!resp.ok) {
+            throw new Error("Gagal memuat data");
+        }
+        const response = await resp.json()
+        return response;
+    }
+
     return{
         Register,
         validateToken,
         Login,
-        SignOut
+        SignOut,
+        addCourt,
+        getProfileCourt
     }
 })()
 
