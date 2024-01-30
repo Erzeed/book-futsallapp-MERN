@@ -7,11 +7,10 @@ export type CourtProfile = {
     addres: string,
     city: string,
     description: string,
-    mapAddres: string[],
     facility: string[],
     typeField: string[],
-    openingHours: number,
-    closingTime: number,
+    openingHours: string,
+    closingTime: string,
     imageUrl: string,
 }
 
@@ -21,11 +20,10 @@ const schema = new mongoose.Schema<CourtProfile>({
     addres: { type: String, required: true },
     city: { type: String, required: true },
     description: { type: String, required: true },
-    mapAddres: [{ type: String, required: true }],
     facility: [{ type: String, required: true }],
     typeField: [{ type: String, required: true }],
-    openingHours: { type: Number, required: true },
-    closingTime: { type: Number, required: true },
+    openingHours: { type: String, required: true },
+    closingTime: { type: String, required: true },
     imageUrl: { type: String, required: true }
 })
 
