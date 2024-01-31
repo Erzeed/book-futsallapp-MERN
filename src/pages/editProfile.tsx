@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { MdOutlineNavigateNext } from "react-icons/md";
 import FormCourt from "../components/form/editcourtform";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import api from "../utils/api";
 import { toast } from "react-toastify";
 import { useState } from "react";
@@ -9,9 +9,15 @@ import { useState } from "react";
 const EditProfile = () => {
     const [loading, setLoading] = useState(false)
 
+    const { data: dataProfile } = useQuery("getProfileCourt",api.getProfileCourt, {
+        onError: (error) => {
+            console.log(error)
+        }
+    })
+
     const mutation = useMutation(api.addCourt, {
         onSuccess: async () => {
-            toast.success("Login berhasil");
+            toast.success("Add berhasil");
             setLoading(false)
         },
         onError: (error: Error) => {
@@ -33,7 +39,7 @@ const EditProfile = () => {
                 <Link to="/mycourt/editprofile" className="hover:text-zinc-800 hover:underline hover:underline-offset-1" >Editcourt</Link>
             </div>
             <div className="content flex justify-center">
-                <FormCourt onSave={onHandleSave} isLoading={loading}/>
+                <FormCourt onSave={onHandleSave} isLoading={loading} dataCourt={dataProfile}/>
             </div>
         </div>
     )

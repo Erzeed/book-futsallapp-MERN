@@ -3,6 +3,7 @@ import GeneralSection from "./generalSection"
 import FacilitySection from "./facilitySection"
 import TypeFieldSection from "./typeFieldSection"
 import DetailSection from "./detailSection"
+import { useEffect } from "react"
 
 export type FormCourtType = {
     name: string,
@@ -19,11 +20,16 @@ export type FormCourtType = {
 type Props = {
     onSave: (FormCourtType: FormData) => void,
     isLoading: boolean,
+    dataCourt?: FormCourtType 
 }
 
-const FormCourt = ({ onSave, isLoading }: Props) => {
+const FormCourt = ({ onSave, isLoading, dataCourt }: Props) => {
     const formMethods = useForm< FormCourtType >()
-    const { handleSubmit } = formMethods
+    const { handleSubmit, reset } = formMethods
+
+    useEffect(() => {
+        reset(dataCourt)
+    }, [dataCourt, reset])
 
     const onHandleSubmit = (data: FormCourtType) => {
         const formData = new FormData();
