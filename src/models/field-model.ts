@@ -1,8 +1,22 @@
 import mongoose from "mongoose";
 
-type field = {
-    
+export type field = {
+    typeField: string,
+    fieldProfileId: object,
+    numberOfFields: number,
+    nameField: string,
+    // dateBooking: Date[],
+    // startTime: string[],
+    // endTime:string[]
 }
-// imageUrl: [{ type: String, required: true }],
-// fieldType: [{ type: String, required: true }],
-// starRating: { type: Number, required: true },
+
+const schema = new mongoose.Schema<field>({
+    fieldProfileId: {type: String, required: true},
+    typeField: {type: String, required: true},
+    numberOfFields: {type: Number, required: true},
+    nameField: {type: String, required: false}
+})
+
+const typeField = mongoose.model<field>("typeField", schema)
+
+export default typeField

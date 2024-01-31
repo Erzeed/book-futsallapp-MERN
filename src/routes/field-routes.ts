@@ -38,8 +38,12 @@ router.post("/", [
         addCourt.imageUrl = resUrl.url
         addCourt.userId = req.userId
 
-        const saveField = new field(addCourt);
-        await saveField.save()
+        const { userId } = addCourt
+        const saveField = await field.findOneAndUpdate(
+            { userId },
+            { $set: addCourt }, /*, ... other fields to update */
+            { upsert: true, new: true } // Upsert option for update or insert, new option to return the modified document
+          );
 
         res.status(200).json(saveField);
     } catch (error) {

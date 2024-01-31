@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import userRoute from "./routes/user-routes";
 import authRoute from "./routes/auth-routes";
 import fieldRoute from "./routes/field-routes";
+import typeField from "./routes/typeField-route";
 import cookieParser from "cookie-parser";
 import { v2 as cloudinary } from "cloudinary";
 
@@ -40,6 +41,7 @@ app.get('/api/test', async (req: Request, res: Response ) => {
 app.use("/api/users", userRoute)
 app.use("/api/auth", authRoute)
 app.use("/api/my-field", fieldRoute)
+app.use("/api/type-field", typeField)
 
 app.listen(7000, () => {
     console.log("server running")
