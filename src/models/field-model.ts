@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 export type field = {
     typeField: string,
     fieldProfileId: object,
-    numberOfFields: number,
+    pricePerHours: number,
     nameField: string,
     // dateBooking: Date[],
     // startTime: string[],
@@ -13,7 +13,7 @@ export type field = {
 const schema = new mongoose.Schema<field>({
     fieldProfileId: {type: String, required: true},
     typeField: {type: String, required: true},
-    numberOfFields: {type: Number, required: true},
+    pricePerHours: {type: Number, required: true},
     nameField: {type: String, required: false}
 })
 
