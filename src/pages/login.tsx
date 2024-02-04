@@ -28,8 +28,8 @@ const Login = () => {
             toast.error(error.message);
         }
     }) 
-    const navigate = useNavigate()
 
+    const navigate = useNavigate()
         const onHandleSubmit = handleSubmit((data) => {
             mutation.mutate(data)
         })

@@ -28,6 +28,7 @@ const Register = () => {
     
     const navigate = useNavigate();
     const queryClient = useQueryClient();
+
     const mutation = useMutation(api.Register, {
         onSuccess: async () => {
             await queryClient.invalidateQueries("validateToken")

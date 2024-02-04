@@ -1,3 +1,4 @@
+import { FormAddField } from "../components/form/addFieldForm/formField";
 import { LoginType } from "../pages/login";
 import { RegisterType } from "../pages/register";
 
@@ -87,13 +88,99 @@ const api = (() => {
         return response;
     }
 
+    async function addFieldData(data: FormAddField) {
+        let newData = data
+        newData = {
+            ...data,
+            pricePerHours: Number(data.pricePerHours)
+        }
+        const resp = await fetch(`${BASE_URL}/api/type-field`, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(newData)
+        })
+
+        if (!resp.ok) {
+            throw new Error("error during add data");
+        }
+
+        return resp.json();
+    }
+
+    async function updateFieldData(data: FormAddField, id: string) {
+        let newData = data
+        newData = {
+            ...data,
+            pricePerHours: Number(data.pricePerHours)
+        }
+        const resp = await fetch(`${BASE_URL}/api/type-field/${id}`, {
+            method: "PATCH",
+            credentials: "include",
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(newData)
+        })
+
+        if (!resp.ok) {
+            throw new Error("error during update data");
+        }
+
+        return resp.json();
+    }
+
+    async function getDataField() {
+        const resp = await fetch(`${BASE_URL}/api/type-field`, {
+            credentials: "include",
+        })
+
+        if (!resp.ok) {
+            throw new Error("Gagal memuat data");
+        }
+        const response = await resp.json()
+        return response;
+    }
+
+    async function getDataFieldById(id: string) {
+        const resp = await fetch(`${BASE_URL}/api/type-field/${id}`, {
+            credentials: "include",
+        })
+
+        if (!resp.ok) {
+            throw new Error("Gagal memuat data");
+        }
+        const response = await resp.json()
+        return response;
+    }
+
+    async function deleteDataField(id: string) {
+        const resp = await fetch(`${BASE_URL}/api/type-field/${id}`, {
+            method: "DELETE",
+            credentials: "include",
+        })
+
+        if (!resp.ok) {
+            throw new Error("Gagal menghapus data");
+        }
+        const response = await resp.json()
+        return response;
+    }
+
     return{
         Register,
         validateToken,
         Login,
         SignOut,
         addCourt,
-        getProfileCourt
+        getProfileCourt,
+        addFieldData,
+        getDataField,
+        deleteDataField,
+        getDataFieldById,
+        updateFieldData
     }
 })()
 
