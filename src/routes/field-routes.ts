@@ -24,18 +24,14 @@ router.post("/", [
     body("openingHours").notEmpty().withMessage("openingHours required"),
     body("closingTime").notEmpty().withMessage("closingTime required"),
     body("facility").notEmpty().isArray().withMessage("facility required"),
-],verifyToken, upload.single("imageFile"), async (req: Request, res: Response) => {
+],verifyToken, upload.array("imageFile",6), async (req: Request, res: Response) => {
     try {
-        const imageFile = req.file as Express.Multer.File;
+        const imageFile = req.files as Express.Multer.File[];
         const addCourt: CourtProfile = req.body;
 
-        const b64 = Buffer.from(imageFile.buffer).toString("base64");
-        let dataURI = "data:" + imageFile.mimetype + ";base64," + b64;
-        const resUrl = await cloudinary.v2.uploader.upload(dataURI, {
-            resource_type: "auto",
-        });
+        const imageUrls = await uploadImages(imageFile);
 
-        addCourt.imageUrl = resUrl.url
+        addCourt.imageUrl = imageUrls
         addCourt.userId = req.userId
 
         const { userId } = addCourt
@@ -62,16 +58,16 @@ router.get("/", verifyToken, async (req: Request, res: Response) => {
   }
 })
 
-// async function uploadImages(imageFiles: Express.Multer.File[]) {
-//     const uploadPromises = imageFiles.map(async (image) => {
-//       const b64 = Buffer.from(image.buffer).toString("base64");
-//       let dataURI = "data:" + image.mimetype + ";base64," + b64;
-//       const res = await cloudinary.v2.uploader.upload(dataURI);
-//       return res.url;
-//     });
+async function uploadImages(imageFile: Express.Multer.File[]) {
+    const uploadPromises = imageFile.map(async (image) => {
+      const b64 = Buffer.from(image.buffer).toString("base64");
+      let dataURI = "data:" + image.mimetype + ";base64," + b64;
+      const res = await cloudinary.v2.uploader.upload(dataURI);
+      return res.url;
+    });
   
-//     const imageUrls = await Promise.all(uploadPromises);
-//     return imageUrls;
-//   }
+    const imageUrls = await Promise.all(uploadPromises);
+    return imageUrls;
+  }
 
 export default router;

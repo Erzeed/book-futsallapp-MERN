@@ -11,7 +11,7 @@ export type CourtProfile = {
     typeField: string[],
     openingHours: string,
     closingTime: string,
-    imageUrl: string,
+    imageUrl: string[],
 }
 
 const schema = new mongoose.Schema<CourtProfile>({
@@ -24,7 +24,7 @@ const schema = new mongoose.Schema<CourtProfile>({
     typeField: [{ type: String, required: true }],
     openingHours: { type: String, required: true },
     closingTime: { type: String, required: true },
-    imageUrl: { type: String, required: true }
+    imageUrl: [{ type: String, required: true }]
 })
 
 const fieldProfile = mongoose.model<CourtProfile>("CourtProfile", schema)

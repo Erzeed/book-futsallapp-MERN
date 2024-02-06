@@ -6,6 +6,7 @@ import userRoute from "./routes/user-routes";
 import authRoute from "./routes/auth-routes";
 import fieldRoute from "./routes/field-routes";
 import typeField from "./routes/typeField-route";
+import dataField from "./routes/data-routes";
 import cookieParser from "cookie-parser";
 import { v2 as cloudinary } from "cloudinary";
 
@@ -42,6 +43,7 @@ app.use("/api/users", userRoute)
 app.use("/api/auth", authRoute)
 app.use("/api/my-field", fieldRoute)
 app.use("/api/type-field", typeField)
+app.use("/api", dataField)
 
 app.listen(7000, () => {
     console.log("server running")
