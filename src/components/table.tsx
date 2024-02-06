@@ -6,8 +6,8 @@ const Table = ({ name, addres, city, closingTime, description, facility, opening
         return <span className="absolute right-1">:</span>
     }
     return(
-        <table className="w-full lg:col-span-2">
-            <tbody className="align-top text-left text-sm h-64">
+        <table className="w-full lg:col-span-2 h-64">
+            <tbody className="align-top text-left text-sm">
                 <tr>
                     <th className="font-medium text-zinc-800 w-1/6 lg:w-1/5 relative">Nama <Separate /></th>
                     <td className="w-5/6 lg:w-4/5">{name}</td>

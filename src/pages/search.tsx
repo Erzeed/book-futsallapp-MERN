@@ -1,6 +1,16 @@
+import { useQuery } from "react-query";
 import Card from "../components/card";
+import { typeDataCourt } from "./home";
+import api from "../utils/api";
 
 const Search = () => {
+
+    const { data: dataCourt } = useQuery("getDataCourt",api.getDataCourt, {
+        onError: (error) => {
+            console.log(error)
+        }
+    })
+
     return(
         <div className="mb-2 mx-10">
             <div className="search gap-5 w-full mt-10 ">
@@ -18,10 +28,9 @@ const Search = () => {
 
                 </div>
                 <div className="card w-4/5 pl-5 space-y-3">
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
+                    {dataCourt?.map((item :typeDataCourt) => (
+                        <Card key={item._id} {...item} />
+                    ))}
                 </div>
             </div>
         </div>

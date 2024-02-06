@@ -2,40 +2,77 @@ import { useEffect, useState } from "react";
 import { AiOutlineLike } from "react-icons/ai";
 import { FaStar } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
+import NavImgBtn from "./navImageBtn";
 
-const Card = () => {
+type typeDataCourt = {
+    city: string
+    description: string,
+    name: string,
+    pricePerHours: string,
+    typeFields: string[],
+    imageUrl: string[],
+}
+
+const Card = ({ city, description, name, pricePerHours, typeFields, imageUrl}: typeDataCourt) => {
+    const [navImage, setNavImage] = useState(0)
     const { pathname } =  useLocation();
     const [ locationPage, setLocationPage ] = useState<boolean | undefined>();
-    const url = "https://a0.muscache.com/im/pictures/miso/Hosting-852899544635683289/original/c627f47e-8ca9-4471-90d4-1fd987dd2362.jpeg?im_w=720";
 
     useEffect(() => {
         setLocationPage(pathname.slice(1) == "search")
     }, [pathname])
 
+    const onHandleNavImage = (type: string) => {
+        if(type == "NEX") {
+            setNavImage(prev => prev + 1)
+        } else if(type == "PREV") {
+            setNavImage(prev => prev - 1)
+        }
+    }
+
     return(
         <div className={`${
-            locationPage ? "flex h-52 border rounded-xl overflow-hidden" : "h-[360px]"
-        } container`}>
+            locationPage ? "h-72 w-1/4" : "h-[360px]"
+        }`}>
             <div className={`${
-                locationPage ? "h-full w-1/4" : "h-[75%] w-full shadow-md rounded-lg"
-            } img relative overflow-hidden`}>
-                <img className="h-full w-full bg-cover" src={url} alt="" />
-                <div className="rounded-full p-2 bg-white absolute top-2 right-2 cursor-pointer">
+                locationPage ? "h-[70%] rounded" : "h-[75%] rounded-lg"
+            } img relative overflow-hidden group w-full`}>
+                <img className="h-full w-full bg-cover" src={imageUrl[navImage]} alt="" />
+                <div className="rounded-full p-2 bg-white absolute top-2 right-2 cursor-pointer scale-0 group-hover:scale-100 duration-200">
                     <AiOutlineLike className="shadow-lg text-black text-base"/>
+                </div>
+                <NavImgBtn 
+                    navImage={navImage}
+                    imgLength={imageUrl.length - 1} 
+                    onClickPrev={() => onHandleNavImage("PREV")}
+                    onClickNext={() => onHandleNavImage("NEX")}
+                />
+                <div className="absolute bottom-1 right-2 flex space-x-1">
+                    {typeFields?.map((item, index) => (
+                        <p key={index} className="py-1 px-2 bg-[rgba(0,0,0,.3)] text-white text-[10px] font-semibold rounded-full">{item}</p>
+                    ))}
                 </div>
             </div>
             <div className={`${
-                locationPage ? "w-3/4 p-2" : "h-[25%] my-1 p-2 shadow-md border rounded-lg"
-            } desc flex flex-col justify-between text-sm font-semibold`}>
-                <div className="desc-wrap flex justify-between tracking-wide">
-                    <p>Majenang, Cilacap</p>
+                locationPage ? "h-[30%]" : "h-[25%]"
+            } desc flex flex-col justify-between my-2`}>
+                <div className="flex justify-between tracking-wide text-sm font-semibold">
+                    <h1 className="hover:underline hover:underline-offset-2 cursor-pointer">{name}</h1>
                     <div className="rating space-x-2 flex items-center">
                         <FaStar />
                         <p>4.5</p>
                     </div>
                 </div>
-                <p className="w-fit px-2 h-5 text-xs  bg-green-100 rounded text-green-900">open</p>
-                <p>Rp 200,00 hours</p>
+                <div className="desc h-20 text-wrap truncate flex flex-col justify-center">
+                    <p className="text-xs font-normal text-gray-800 leading-5 tracking-wide">{description}</p>
+                </div>
+                <div className={`${
+                    locationPage ? "text-xs space-x-1" : "text-sm space-x-2"
+                } flex font-normal text-gray-800`}>
+                    <p>{`${pricePerHours} jam`}</p>
+                    <p>.</p>
+                    <p>{city}</p>
+                </div>
             </div>
         </div>
     )

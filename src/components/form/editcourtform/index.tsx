@@ -14,7 +14,8 @@ export type FormCourtType = {
     typeField: string[],
     openingHours: number,
     closingTime: number,
-    imageFile: string,
+    imageFile: FileList,
+    // imageFiles: FileList;
 }
 
 type Props = {
@@ -39,7 +40,6 @@ const FormCourt = ({ onSave, isLoading, dataCourt }: Props) => {
         formData.append("description", data.description);
         formData.append("openingHours", data.openingHours.toString());
         formData.append("closingTime", data.closingTime.toString());
-        formData.append("imageFile", data.imageFile[0]);
 
         data.facility.forEach((facility, index) => {
             formData.append(`facility[${index}]`, facility)
@@ -47,7 +47,12 @@ const FormCourt = ({ onSave, isLoading, dataCourt }: Props) => {
         data.typeField.forEach((typeField, index) => {
             formData.append(`typeField[${index}]`, typeField)
         })
-
+        Array.from(data.imageFile).forEach((imageFile) => {
+            formData.append(`imageFile`, imageFile)
+        })
+        // Array.from(data.imageFiles).forEach((imageFile, index) => {
+        //     formData.append(`imageFiles[${index}]`, imageFile)
+        // })
         onSave(formData)
     }
 

@@ -7,13 +7,14 @@ import { Link } from "react-router-dom";
 import { AiOutlineForm } from "react-icons/ai";
 import { HiOutlineViewGridAdd } from "react-icons/hi";
 import { useQuery } from "react-query";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import NavImgBtn from "../components/navImageBtn";
 
 const MyCourt = () => {
     const [isOpen, setIsOpen] = useState(false)
     const [idField, setIdField] = useState<string>()
+    const [navImage, setNavImage] = useState(0)
     const reff = useRef<HTMLDivElement>(null)
-    const imgReff = useRef<HTMLImageElement>(null)
     
     const { data: dataProfile } = useQuery("getProfileCourt",api.getProfileCourt, {
         onError: (error) => {
@@ -37,33 +38,11 @@ const MyCourt = () => {
         setIdField(id)
     }
 
-    useEffect(() => {
-        onHandleListener()
-    },[])
-
-    const onZoom = (event: MouseEvent) => {
-        const target = event.target as HTMLTextAreaElement;
-        const x = event.clientX - target.offsetLeft;
-        const y = event.clientY - target.offsetTop;
-    
-        if(imgReff.current) {
-            imgReff.current.style.transformOrigin = `${x}px ${y}px`;
-            imgReff.current.style.transform = "scale(2)";
-        }
-    }
-
-    const offZoom = () => {
-        if(imgReff.current) {
-            imgReff.current.style.transformOrigin = `center center`;
-            imgReff.current.style.transform = "scale(1)";
-        }
-    }
-    
-    const onHandleListener = () => {
-        if(reff.current) {
-            reff.current.addEventListener("mousemove", onZoom)
-            reff.current.addEventListener("mouseover", onZoom)
-            reff.current.addEventListener("mouseleave", offZoom)
+    const onHandleNavImage = (type: string) => {
+        if(type == "NEX") {
+            setNavImage(prev => prev + 1)
+        } else if(type == "PREV") {
+            setNavImage(prev => prev - 1)
         }
     }
 
@@ -80,12 +59,21 @@ const MyCourt = () => {
                 </div>
                 <div className="detail py-6 px-5 text-sm grid lg:grid-cols-3">
                     <Table {...dataProfile}/>
-                    <div className="detail w-full lg:col-span-1 mt-5 lg:mt-0 flex justify-center">
+                    <div className="detail w-full lg:col-span-1 mt-5 lg:mt-0 flex justify-center group">
                             <div 
-                                className="img h-64 w-full sm:w-1/2 lg:w-3/4 rounded-lg overflow-hidden shadow-xl bg-contain"
+                                className="relative img h-80 w-full sm:w-1/2 lg:w-3/4 rounded-lg overflow-hidden bg-cover bg-center bg-no-repeat"
+                                style={{ 
+                                        backgroundImage: `url(${dataProfile?.imageUrl[navImage]})`,
+                                        borderRadius: "15px"
+                                    }}
                                 ref={reff}
                             >
-                                <img ref={imgReff} className="w-full h-full cursor-crosshair duration-150" src={dataProfile?.imageUrl} alt="" />
+                                <NavImgBtn 
+                                    navImage={navImage}
+                                    imgLength={dataProfile?.imageUrl.length - 1} 
+                                    onClickPrev={() => onHandleNavImage("PREV")}
+                                    onClickNext={() => onHandleNavImage("NEX")}
+                                />
                             </div>
                     </div>
                 </div>

@@ -4,6 +4,7 @@ import { IoCloudUploadOutline } from "react-icons/io5"
 
 const DetailSection = () => {
     const { register, formState: {errors}} = useFormContext<FormCourtType>()
+    // const existingImageFile = watch("imageFile");
     return(
         <section className="detail text-sm font-semibold text-zinc-600">
             <div className="flex gap-5 my-3">
@@ -40,9 +41,21 @@ const DetailSection = () => {
                     </div>
                     <input 
                         id="dropzone-file" 
+                        multiple
+                        accept="image/*"
                         type="file" 
                         className="hidden"
-                            {...register("imageFile", {required: "Gambar belum di upload"})}
+                            {...register("imageFile", {
+                                validate: (imageFile) => {
+                                    const totalLength = imageFile.length;
+                                    if (totalLength === 0) {
+                                        return "Gambar belum di uploud";
+                                    } else if (totalLength > 6) {
+                                        return "Maksimal gambar yang diuploud 6";
+                                    }
+                                    return true;
+                                }
+                            })}
                         />
                 </label>
                 {errors.imageFile && (

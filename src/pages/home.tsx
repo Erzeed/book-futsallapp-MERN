@@ -3,11 +3,23 @@ import hero from "../assets/hero.png";
 import hero3 from "../assets/hero3.png";
 import Card from "../components/card";
 import { Link } from "react-router-dom";
+import { useQuery } from "react-query";
+import api from "../utils/api";
 
+export type typeDataCourt = {
+    item: object,
+    _id: string
+}
 const Home = () => {
 
+    const { data: dataCourt } = useQuery("getDataCourt",api.getDataCourt, {
+        onError: (error) => {
+            console.log(error)
+        }
+    })
+
     return(
-        <div className="flex flex-col mb-2">
+        <div className="flex flex-col mb-2 overflow-y-hidden">
             <div className="bg-[#144FCC] h-[74vh] w-full text-white flex justify-between items-center px-7">
                 <div className="desc w-1/2 z-10">
                     <h1 className="text-7xl leading-tight font-bold logo">Discover New Destination</h1>
@@ -30,14 +42,9 @@ const Home = () => {
             <div 
                 className="content-card grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 w-full px-7 my-5 gap-6"
             >
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
+                {dataCourt?.map((item :typeDataCourt) => (
+                    <Card key={item._id} {...item} />
+                ))}
             </div>
             <div className="flex justify-center">
                 <Link to="/search" className="text-sm font-semibold py-2 px-8 rounded-full shadow-lg border hover:bg-[#88304E] hover:text-white hover:shadow-none" >More</Link>
@@ -47,12 +54,14 @@ const Home = () => {
                     <div className="rounded-full absolute -right-2 -top-2 h-20 w-20 bg-yellow-300"></div>
                     <div className="rounded-full h-[450px] w-[450px] bg-[#144FCC] text-white flex justify-center items-center">
                         <div className="des font-semibold text-2xl leading-7">
-                            <h1>Find <motion.span 
-                                        animate={{ x: 100 }}
-                                        transition={{ ease: "easeOut", duration: 2 }}
+                            <h1>Find 
+                                {/* <motion.span 
+                                        initial={{ opacity: 0, scale: 0.5 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ duration: 5, ease: 'linear', repeat: Infinity }}
                                         className="underline underline-offset-4 decoration-yellow-300">
                                             Field
-                                        </motion.span>
+                                        </motion.span> */}
                             </h1>
                             <h2>for your next field</h2>
                             <button className="bg-white rounded-sm text-[#144FCC] text-sm py-1 px-16 mt-3" type="button">

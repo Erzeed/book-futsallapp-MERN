@@ -22,6 +22,16 @@ const api = (() => {
           }
     }
 
+    async function getDataCourt() {
+        const resp = await fetch(`${BASE_URL}/api`)
+
+        if (!resp.ok) {
+            throw new Error("Gagal memuat data");
+        }
+        const response = await resp.json()
+        return response;
+    }
+
     async function Login (data: LoginType) {
         const resp = await fetch(`${BASE_URL}/api/auth/login`, {
             method: 'POST',
@@ -180,7 +190,8 @@ const api = (() => {
         getDataField,
         deleteDataField,
         getDataFieldById,
-        updateFieldData
+        updateFieldData,
+        getDataCourt
     }
 })()
 
