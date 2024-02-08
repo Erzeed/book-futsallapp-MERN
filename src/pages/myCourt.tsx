@@ -6,14 +6,18 @@ import Prompt from "../components/prompt";
 import { Link } from "react-router-dom";
 import { AiOutlineForm } from "react-icons/ai";
 import { HiOutlineViewGridAdd } from "react-icons/hi";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useRef, useState } from "react";
+import { toast } from "react-toastify";
 import NavImgBtn from "../components/navImageBtn";
+import { useAppContext } from "../context/app-context";
 
 const MyCourt = () => {
     const [isOpen, setIsOpen] = useState(false)
     const [idField, setIdField] = useState<string>()
     const [navImage, setNavImage] = useState(0)
+    const { setIsOpenPrompt, promptEvent } = useAppContext()
+    const queryClient = useQueryClient();
     const reff = useRef<HTMLDivElement>(null)
     
     const { data: dataProfile } = useQuery("getProfileCourt",api.getProfileCourt, {
@@ -36,6 +40,25 @@ const MyCourt = () => {
         const { id } = event.currentTarget
         onHandleToggleForm()
         setIdField(id)
+    }
+
+    const {mutate} = useMutation(api.deleteDataField, {
+        onSuccess: async () => {
+            setIsOpenPrompt(false)
+            toast.success("Berhasil Dihapus")
+            await queryClient.fetchQuery("getDataLapangan")
+        },
+        onError: (error) => {
+            console.log(error)
+            setIsOpenPrompt(false)
+            toast.error("Gagal menghapus")
+        }
+    })
+
+    const onHandleDeleteData = () => {
+        if(promptEvent?.id) {
+            mutate(promptEvent.id)
+        }
     }
 
     const onHandleNavImage = (type: string) => {
@@ -93,6 +116,7 @@ const MyCourt = () => {
             <Prompt
                 title="Delete Data" 
                 desc="Are you sure you want to delete data? data will be permanently removed. This action cannot be undone." 
+                isConfirm={onHandleDeleteData}
             />
         </div>
     )

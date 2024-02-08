@@ -1,15 +1,12 @@
 import { motion } from "framer-motion";
 import hero from "../assets/hero.png";
 import hero3 from "../assets/hero3.png";
-import Card from "../components/card";
+import Card, { typeDataCourt } from "../components/card";
 import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
 import api from "../utils/api";
+import Search from "../components/search";
 
-export type typeDataCourt = {
-    item: object,
-    _id: string
-}
 const Home = () => {
 
     const { data: dataCourt } = useQuery("getDataCourt",api.getDataCourt, {
@@ -29,15 +26,8 @@ const Home = () => {
                     <img className="bg-cover h-full w-3/4" src={hero3} alt="" />
                 </div>
             </div>
-            <div className="search px-7 gap-5 w-full mt-10 ">
-                <div className="search w-full border shadow-md h-28 rounded-2xl overflow-hidden">
-                    <div className="title text-xs font-semibold flex  justify-center items-center w-full min-h-8 border-b text-zinc-800">
-                        <p className="underline underline-offset-[11px] decoration-blue-900">Search Futsal Field</p>
-                    </div>
-                    <div className="form">
-
-                    </div>
-                </div>
+            <div className="search px-7 w-full mt-10 ">
+                <Search />
             </div>
             <div 
                 className="content-card grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 w-full px-7 my-5 gap-6"

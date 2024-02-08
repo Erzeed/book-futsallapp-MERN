@@ -4,8 +4,9 @@ import { FaStar } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import NavImgBtn from "./navImageBtn";
 
-type typeDataCourt = {
-    city: string
+export type typeDataCourt = {
+    _id: string,
+    city: string,
     description: string,
     name: string,
     pricePerHours: string,
@@ -32,12 +33,12 @@ const Card = ({ city, description, name, pricePerHours, typeFields, imageUrl}: t
 
     return(
         <div className={`${
-            locationPage ? "h-72 w-1/4" : "h-[360px]"
+            locationPage ? "h-72 w-56" : "h-[360px]"
         }`}>
             <div className={`${
                 locationPage ? "h-[70%] rounded" : "h-[75%] rounded-lg"
             } img relative overflow-hidden group w-full`}>
-                <img className="h-full w-full bg-cover" src={imageUrl[navImage]} alt="" />
+                <img className="h-full w-full object-cover" src={imageUrl[navImage]} alt="" />
                 <div className="rounded-full p-2 bg-white absolute top-2 right-2 cursor-pointer scale-0 group-hover:scale-100 duration-200">
                     <AiOutlineLike className="shadow-lg text-black text-base"/>
                 </div>
@@ -54,8 +55,9 @@ const Card = ({ city, description, name, pricePerHours, typeFields, imageUrl}: t
                 </div>
             </div>
             <div className={`${
-                locationPage ? "h-[30%]" : "h-[25%]"
-            } desc flex flex-col justify-between my-2`}>
+                    locationPage ? "h-[30%]" : "h-[25%]"
+                } desc flex flex-col justify-between my-2`}
+            >
                 <div className="flex justify-between tracking-wide text-sm font-semibold">
                     <h1 className="hover:underline hover:underline-offset-2 cursor-pointer">{name}</h1>
                     <div className="rating space-x-2 flex items-center">
@@ -64,12 +66,13 @@ const Card = ({ city, description, name, pricePerHours, typeFields, imageUrl}: t
                     </div>
                 </div>
                 <div className="desc h-20 text-wrap truncate flex flex-col justify-center">
-                    <p className="text-xs font-normal text-gray-800 leading-5 tracking-wide">{description}</p>
+                    <p className="text-xs font-normal text-gray-600 leading-4 tracking-wide">{description}</p>
                 </div>
                 <div className={`${
-                    locationPage ? "text-xs space-x-1" : "text-sm space-x-2"
-                } flex font-normal text-gray-800`}>
-                    <p>{`${pricePerHours} jam`}</p>
+                        locationPage ? "text-xs space-x-1" : "text-sm space-x-2"
+                    } flex font-normal text-gray-800`}
+                >
+                    <p>{`${pricePerHours}`}</p>
                     <p>.</p>
                     <p>{city}</p>
                 </div>

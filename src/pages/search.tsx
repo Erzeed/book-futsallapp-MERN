@@ -1,9 +1,9 @@
 import { useQuery } from "react-query";
-import Card from "../components/card";
-import { typeDataCourt } from "./home";
+import Card, { typeDataCourt } from "../components/card";
 import api from "../utils/api";
+import Search from "../components/search";
 
-const Search = () => {
+const SearchPage = () => {
 
     const { data: dataCourt } = useQuery("getDataCourt",api.getDataCourt, {
         onError: (error) => {
@@ -13,15 +13,8 @@ const Search = () => {
 
     return(
         <div className="mb-2 mx-10">
-            <div className="search gap-5 w-full mt-10 ">
-                <div className="search w-full border shadow-md h-28 rounded-2xl overflow-hidden">
-                    <div className="title text-xs font-semibold flex  justify-center items-center w-full min-h-8 border-b text-zinc-800">
-                        <p className="underline underline-offset-[11px] decoration-blue-900">Search Futsal Field</p>
-                    </div>
-                    <div className="form">
-
-                    </div>
-                </div>
+            <div className="search w-full mt-10 ">
+                <Search />
             </div>
             <div className="content flex w-full mt-5">
                 <div className="filter w-1/5 border rounded-lg h-96">
@@ -37,4 +30,4 @@ const Search = () => {
     )
 }
 
-export default Search;
+export default SearchPage;

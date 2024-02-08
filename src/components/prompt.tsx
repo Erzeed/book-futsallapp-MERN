@@ -3,11 +3,12 @@ import { useAppContext } from "../context/app-context";
 
 type props = {
     title: string,
-    desc: string
+    desc: string,
+    isConfirm: () => void
 }
 
-const Prompt = ({ title, desc}: props) => {
-    const { isOpenPrompt, onHandleTogglePrompt, onHandlePromptConfirm} = useAppContext()
+const Prompt = ({ title, desc, isConfirm}: props) => {
+    const { isOpenPrompt, onHandleTogglePrompt} = useAppContext()
 
     return(
         <div className={`${
@@ -24,19 +25,21 @@ const Prompt = ({ title, desc}: props) => {
                     </div>
                     <div className="title">
                         <h1 className="text-base font-medium tracking-wide">{title}</h1>
-                        <p className="text-xs text-zinc-500 tracking-wide pt-1 leading-[18px]">{desc}</p>
+                        <p className="text-xs text-zinc-500 font-normal tracking-wide pt-1 leading-[18px]">{desc}</p>
                     </div>
                 </div>
                 <div className="w-full flex justify-end space-x-3">
                     <button 
                         className="px-3 text-white py-1 text-sm font-medium rounded bg-red-500"
-                        onClick={onHandlePromptConfirm}
+                        type="button"
+                        onClick={isConfirm}
                     >
                         Delete
                     </button>
                     <button 
                         className="px-3 py-1 text-sm font-medium rounded border-2"
                         onClick={onHandleTogglePrompt}
+                        type="button"
                     >
                         Cancel
                     </button>

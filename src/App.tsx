@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom"
 import Header from "./components/header"
 import Home from "./pages/home"
 import Footer from "./components/footer"
-import Search from "./pages/search"
+import SearchPage from "./pages/search"
 import Login from "./pages/login"
 import Register from "./pages/register"
 import MyCourt from "./pages/myCourt"
@@ -18,7 +18,7 @@ function App() {
       <div className="content w-full">
         <Routes>
           <Route path="/" element={<Home />}  />
-          <Route path="/search" element={<Search />}  />
+          <Route path="/search" element={<SearchPage />}  />
           <Route path="/login" element={<Login />}  />
           <Route path="/register" element={<Register />}  />
           <Route path="/mycourt" element={<MyCourt />} />
