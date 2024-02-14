@@ -10,8 +10,8 @@ router.get("/", async (req:Request, res:Response) => {
             {
                 $lookup: {
                     from: "typefields",
-                    localField: 'fieldProfileId',
-                    foreignField: 'userId',
+                    localField: 'userId',
+                    foreignField: 'fieldProfileId',
                     as: 'dataField'
                 }
             },

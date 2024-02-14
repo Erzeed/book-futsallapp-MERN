@@ -28,12 +28,17 @@ router.post("/", [
     try {
         const imageFile = req.files as Express.Multer.File[];
         let addCourt: CourtProfile = req.body;
-
         const imageUrls = await uploadImages(imageFile);
-        addCourt.imageUrl = [
-          ...addCourt.imageUrl, // Spread the existing image URLs
-          ...imageUrls // Spread the new image URLs
-        ];
+        
+        if(addCourt.imageUrl) {
+          addCourt.imageUrl = [
+            ...addCourt.imageUrl, // Spread the existing image URLs
+            ...imageUrls // Spread the new image URLs
+          ];
+        } else {
+          addCourt.imageUrl = imageUrls
+        }
+        
         addCourt.userId = req.userId
         const { userId } = addCourt
         const saveField = await field.findOneAndUpdate(
