@@ -68,7 +68,9 @@ const FormCourt = ({ onSave, isLoading, dataCourt }: Props) => {
                 <DetailSection />
                 <div className="flex justify-end w-full">
                     <button 
-                        className="flex justify-center items-center w-28 h-10 text-xs font-semibold  bg-blue-100 hover:bg-blue-500 hover:text-white rounded-full" 
+                        className={`${
+                            isLoading ? "cursor-wait" : "cursor-pointer"
+                        } flex justify-center items-center w-28 h-10 text-xs font-semibold  bg-blue-100 hover:bg-blue-500 hover:text-white rounded-full`} 
                         type="submit">
                             {isLoading ? "Simpan...": "Simpan"}
                     </button>

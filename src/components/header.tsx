@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/app-context";
 import {  useMutation, useQueryClient } from "react-query";
 import api from "../utils/api";
@@ -6,12 +6,14 @@ import { toast } from "react-toastify";
 
 const Header = () => {
     const { isLoggin } = useAppContext();
-    const queryClient = useQueryClient()
+    const queryClient = useQueryClient();
+    const navigate = useNavigate();
     
     const mutation = useMutation(api.SignOut, {
         onSuccess: async () => {
             await queryClient.invalidateQueries("validateToken")
             toast.success("Sign out succes")
+            navigate("/login")
         },
         onError: (error: Error) => {
             toast.error(error.message)

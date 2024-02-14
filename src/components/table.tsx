@@ -6,8 +6,8 @@ const Table = ({ name, addres, city, closingTime, description, facility, opening
         return <span className="absolute right-1">:</span>
     }
     return(
-        <table className="w-full lg:col-span-2 h-64">
-            <tbody className="align-top text-left text-sm">
+        <table className="w-full lg:col-span-2 min-h-64">
+            <tbody className="align-top text-left text-sm tracking-[.2px] text-zinc-800">
                 <tr>
                     <th className="font-medium text-zinc-800 w-1/6 lg:w-1/5 relative">Nama <Separate /></th>
                     <td className="w-5/6 lg:w-4/5">{name}</td>
@@ -18,17 +18,17 @@ const Table = ({ name, addres, city, closingTime, description, facility, opening
                 </tr>
                 <tr>
                     <th className="font-medium text-zinc-800 w-1/6 lg:w-1/5 relative">Alamat Lengkap <Separate /></th>
-                    <td className="w-5/6 lg:w-4/5">{addres}</td>
+                    <td className="w-5/6 lg:w-4/5 leading-6">{addres}</td>
                 </tr>
                 <tr>
                     <th className="font-medium text-zinc-800 w-1/6 lg:w-1/5 relative">Deskripsi <Separate /></th>
-                    <td className="w-5/6 lg:w-4/5">{description}</td>
+                    <td className="w-5/6 lg:w-4/5 leading-6">{description}</td>
                 </tr>
                 <tr>
                     <th className="font-medium text-zinc-800 w-1/6 lg:w-1/5 relative">Jam Buka <Separate /></th>
-                    <td className="w-5/6 lg:w-4/5">{`${openingHours} - ${closingTime}`}</td>
+                    <td className="w-5/6 lg:w-4/5">{openingHours && `${openingHours} - ${closingTime}`}</td>
                 </tr>
-                <tr>
+                <tr className="my-2">
                     <th className="font-medium text-zinc-800 w-1/6 lg:w-1/5 relative">Fasilitas <Separate /></th>
                     <td className="w-5/6 lg:w-4/5">
                         {facility?.map((item, index) => (

@@ -15,6 +15,7 @@ export type typeDataCourt = {
 }
 
 const Card = ({ city, description, name, pricePerHours, typeFields, imageUrl}: typeDataCourt) => {
+    console.log(typeFields)
     const [navImage, setNavImage] = useState(0)
     const { pathname } =  useLocation();
     const [ locationPage, setLocationPage ] = useState<boolean | undefined>();

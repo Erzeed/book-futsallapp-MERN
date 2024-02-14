@@ -18,3 +18,11 @@ export const typeField = [
     "Parquette",
     "Taraflex"
 ]
+
+export const location = [
+    "Surabaya",
+    "Yogyakarta",
+    "Sleman",
+    "Bantul",
+    "Cilacap",
+]
