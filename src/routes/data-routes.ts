@@ -1,5 +1,6 @@
 import express, {Request, Response} from "express";
 import fieldProfile from "../models/mycourt-models";
+import field from "../models/mycourt-models";
 import typeField from "../models/field-model";
 
 const router = express.Router()
@@ -54,6 +55,34 @@ router.get("/", async (req:Request, res:Response) => {
     } catch (error) {
         console.log(error)
         return res.status(500).json("Something wrong")
+    }
+})
+
+router.get("/search", async (req:Request, resp:Response) => {
+    try {
+        const { name, kota, minHarga, maxHarga, tipeLapangan, facility, lokasi } = req.query;
+        const query: any = {};
+        if (name) {
+            query.name = { $regex: name, $options: "i" };
+        }
+        if (lokasi) {
+            query.addres = { $regex: lokasi, $options: "i" };
+        }
+        if (kota) {
+            query.city = { $regex: kota, $options: "i" };
+        }
+        if (facility) {
+            query.facility = { $regex: facility, $options: "i" };
+        }
+        if (tipeLapangan) {
+            query.typeField = { $regex: tipeLapangan, $options: "i" };
+        }
+
+        // Find documents matching the query
+        const searchResults = await fieldProfile.find(query);
+        resp.status(200).json(searchResults)
+    } catch (error) {
+        return resp.status(500).json("Something Wrong")
     }
 })
 
