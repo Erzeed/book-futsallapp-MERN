@@ -1,11 +1,11 @@
 import { createContext, useContext, useState } from "react";
 
 type SearchContex = {
-    nama: string,
+    name: string,
     kota: string,
     tipeLapangan: string,
     saveSearchValue: (
-        nama: string,
+        name: string,
         kota: string,
         tipeLapangan: string,
     ) => void
@@ -14,22 +14,22 @@ type SearchContex = {
 const SearchContext = createContext<SearchContex | undefined>(undefined);
 
 export const AppSeacrhContextProvider = ({children}: {children: React.ReactNode}) => {
-    const [ nama, setNama] = useState<string>("")
+    const [ name, setNama] = useState<string>("")
     const [ kota, setKota] = useState<string>("")
     const [ tipeLapangan, setTipeLapangan] = useState<string>("")
 
     const saveSearchValue = (
-        nama: string,
+        name: string,
         kota: string,
         tipeLapangan: string,
     ) => {
-        setNama(nama);
+        setNama(name);
         setKota(kota);
         setTipeLapangan(tipeLapangan);
     }
     return(
         <SearchContext.Provider value={{
-            nama,
+            name,
             kota,
             tipeLapangan,
             saveSearchValue

@@ -3,7 +3,7 @@ import Card, { typeDataCourt } from "../components/card";
 import api from "../utils/api";
 import Search from "../components/search";
 import Checkbox from "../components/fillter/filterCheckbox";
-import { location, typeField } from "../utils/constant";
+import { location } from "../utils/constant";
 import { useSearchContext } from "../context/search-contex";
 import HargaFilter from "../components/fillter/harga-fillter";
 import FacilityFillter from "../components/fillter/facility-fillter";
@@ -22,7 +22,7 @@ const SearchPage = () => {
     })
 
     const searchParams = {
-        nama: search.nama,
+        name: search.name,
         kota: search.kota,
         tipeLapangan: search.tipeLapangan,
         lokasi: lokasiFiter,
@@ -30,7 +30,11 @@ const SearchPage = () => {
         minHarga: minHarga.toString(),
         maxHarga: maxHarga.toString()
     }
-    console.log(searchParams)
+    
+    const {data : searchData} = useQuery(["search", searchParams], () => 
+        api.search(searchParams)
+    )
+    console.log(searchData);
     const onHandleCheckbox = (event: React.ChangeEvent<HTMLInputElement>, type: string) => {
         const { target, target: {value}} = event
         if(type == "LOKASI") {

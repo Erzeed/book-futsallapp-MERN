@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import hero from "../assets/hero.png";
 import hero3 from "../assets/hero3.png";
 import Card, { typeDataCourt } from "../components/card";

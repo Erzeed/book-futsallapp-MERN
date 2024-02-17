@@ -29,7 +29,7 @@ const Dropdown = ({tipeLapangan, setTipeLapangan}: props) => {
     };
 
     return (
-        <div className="dropdown relative" ref={dropdownRef}>
+        <div className="dropdown relative z-20" ref={dropdownRef}>
             <button
                 className="text-sm text-zinc-400 w-full h-full px-3 flex items-center justify-between"
                 type="button"

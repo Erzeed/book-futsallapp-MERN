@@ -5,13 +5,13 @@ import { FormEvent, useState } from "react";
 
 const Search = () => {
     const search = useSearchContext()
-    const [ nama, setNama] = useState<string>(search.nama)
+    const [ name, setNama] = useState<string>(search.name)
     const [ kota, setKota] = useState<string>(search.kota)
     const [ tipeLapangan, setTipeLapangan] = useState<string>(search.tipeLapangan)
 
     const onHandleSearch = (event: FormEvent) => {
         event.preventDefault()
-        search.saveSearchValue(nama, kota, tipeLapangan)
+        search.saveSearchValue(name, kota, tipeLapangan)
     }
     return(
         <div className="search w-full border h-36 rounded-2xl">
@@ -24,7 +24,7 @@ const Search = () => {
                         type="text" 
                         placeholder="Nama"
                         className="focus:outline-none px-3 rounded-l-full"
-                        value={nama}
+                        value={name}
                         onChange={(event) => setNama(event.target.value)}
                     />
                     <input 
