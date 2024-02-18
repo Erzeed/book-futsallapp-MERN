@@ -1,12 +1,19 @@
 import express, {Request, Response} from "express";
 import fieldProfile from "../models/mycourt-models";
-import field from "../models/mycourt-models";
-import typeField from "../models/field-model";
 
 const router = express.Router()
 
-router.get("/", async (req:Request, res:Response) => {
+router.get("/search", async (req:Request, resp:Response) => {
     try {
+
+        const pageSize =  parseInt(
+            req.query.page ? req.query.page.toString() : "1"
+        );;
+        const query: any = searchQuery(req.query);
+        // const pageNumber = parseInt(
+        // req.query.page ? req.query.page.toString() : "1"
+        // );
+        // const skip = (pageNumber - 1) * pageSize;
         const dataField = await fieldProfile.aggregate([
             {
                 $lookup: {
@@ -16,9 +23,8 @@ router.get("/", async (req:Request, res:Response) => {
                     as: 'dataField'
                 }
             },
-            {
-                $unwind: '$dataField' // Unwind the array
-            },
+            {   $unwind: '$dataField' },
+            {   $unwind: '$facility' },
             {
                 $group: {
                     _id: '$_id', // Group by the original document's _id
@@ -27,6 +33,7 @@ router.get("/", async (req:Request, res:Response) => {
                     imageUrl: { $first: '$imageUrl' },
                     description: { $first: '$description' },
                     typeFields: { $addToSet: '$dataField.typeField' }, // Use $addToSet to get unique typeField values
+                    facility: { $addToSet: '$facility' }, // Use $addToSet to get unique typeField values
                     minPricePerHours: { $min: '$dataField.pricePerHours' }, // Minimum pricePerHours
                     maxPricePerHours: { $max: '$dataField.pricePerHours' }  // Maximum pricePerHours
                 }
@@ -39,51 +46,54 @@ router.get("/", async (req:Request, res:Response) => {
                     imageUrl: 1,
                     description: 1,
                     typeFields: 1,
-                    pricePerHours: {
-                            $concat: [
-                            'Rp.',
-                            { $toString: '$minPricePerHours' },
-                            ' - ',
-                            'Rp.',
-                            { $toString: '$maxPricePerHours' }
-                            ]
-                        }
+                    facility: 1,
+                    minPricePerHours: 1,
+                    maxPricePerHours:1
                     }
-            }
+            },
+            {   $match: query },
+            {   $limit: pageSize }
         ]);
-        res.status(200).json(dataField);
-    } catch (error) {
-        console.log(error)
-        return res.status(500).json("Something wrong")
-    }
-})
-
-router.get("/search", async (req:Request, resp:Response) => {
-    try {
-        const { name, kota, minHarga, maxHarga, tipeLapangan, facility, lokasi } = req.query;
-        const query: any = {};
-        if (name) {
-            query.name = { $regex: name, $options: "i" };
-        }
-        if (lokasi) {
-            query.addres = { $regex: lokasi, $options: "i" };
-        }
-        if (kota) {
-            query.city = { $regex: kota, $options: "i" };
-        }
-        if (facility) {
-            query.facility = { $regex: facility, $options: "i" };
-        }
-        if (tipeLapangan) {
-            query.typeField = { $regex: tipeLapangan, $options: "i" };
-        }
-
-        // Find documents matching the query
-        const searchResults = await fieldProfile.find(query);
-        resp.status(200).json(searchResults)
+        resp.status(200).json(dataField)
     } catch (error) {
         return resp.status(500).json("Something Wrong")
     }
 })
+
+const searchQuery = (query: any) => {
+    let constructQuery: any = {}
+    if (query.name) {
+        constructQuery.name = { $regex: query.name, $options: "i" };
+    }
+    if (query.kota) {
+        constructQuery.city = { $regex: query.kota, $options: "i" };
+    }
+    if (query.tipeLapangan) {
+        constructQuery.typeFields = { $regex: query.tipeLapangan, $options: "i"};
+    }
+    if (query.minHarga) {
+        const minHargaInt = parseInt(query.minHarga);
+        constructQuery.minPricePerHours = {
+            $gte: minHargaInt
+        };
+    }
+    if (query.maxHarga) {
+        const maxHarga = parseInt(query.maxHarga);
+        constructQuery.maxPricePerHours = {
+            $lte: maxHarga
+        };
+    }
+    if (query.lokasi) {
+        constructQuery.city = { 
+            $all: Array.isArray(query.lokasi) ? query.lokasi : [query.lokasi]
+        };
+    }
+    if (query.facility) {
+        constructQuery.facility = { 
+            $all: Array.isArray(query.facility) ? query.facility : [query.facility]
+        };
+    }
+    return constructQuery
+}
 
 export default router
