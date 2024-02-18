@@ -7,7 +7,9 @@ import { location } from "../utils/constant";
 import { useSearchContext } from "../context/search-contex";
 import HargaFilter from "../components/fillter/harga-fillter";
 import FacilityFillter from "../components/fillter/facility-fillter";
+import { TbFaceIdError } from "react-icons/tb";
 import { useState } from "react";
+import Loading from "../components/loading";
 
 const SearchPage = () => {
     const search = useSearchContext()
@@ -15,26 +17,23 @@ const SearchPage = () => {
     const [ facilityFilter, setfacilityFilter] = useState<string[]>([])
     const [ minHarga, setMinHarga] = useState<string>("")
     const [ maxHarga, setMaxHarga] = useState<string>("")
-    const { data: dataCourt } = useQuery("getDataCourt",api.getDataCourt, {
-        onError: (error) => {
-            console.log(error)
-        }
-    })
+    const [page, setPage] = useState<number>(5);
 
     const searchParams = {
         name: search.name,
         kota: search.kota,
         tipeLapangan: search.tipeLapangan,
         lokasi: lokasiFiter,
+        page: page.toString(),
         facility: facilityFilter,
         minHarga: minHarga.toString(),
         maxHarga: maxHarga.toString()
     }
-    
-    const {data : searchData} = useQuery(["search", searchParams], () => 
+
+    const {data :searchData, isLoading} = useQuery(["search", searchParams], () => 
         api.search(searchParams)
     )
-    console.log(searchData);
+
     const onHandleCheckbox = (event: React.ChangeEvent<HTMLInputElement>, type: string) => {
         const { target, target: {value}} = event
         if(type == "LOKASI") {
@@ -86,12 +85,23 @@ const SearchPage = () => {
                 </div>
                 <div className="card w-4/5 pl-5 space-y-3">
                     <div className="search w-full">
-                        <Search />
+                        <Search searchParams={searchParams}/>
                     </div>
                     <div className="content flex flex-wrap gap-2">
-                        {dataCourt?.map((item :typeDataCourt) => (
-                            <Card key={item._id} {...item} />
-                        ))}
+                        {isLoading ? (
+                            <Loading />
+                        ) : (
+                            searchData?.length !== 0 ? (
+                                searchData?.map((item :typeDataCourt) => (
+                                    <Card key={item._id} {...item} />
+                                ))
+                            ) : (
+                                <div className="w-full flex flex-col justify-center items-center">
+                                    <TbFaceIdError className="text-[50px]"/>
+                                    <p className="text-sm text-zinc-500">Data Tidak Ditemukan</p>
+                                </div>
+                            )
+                        )}
                     </div>
                 </div>
             </div>

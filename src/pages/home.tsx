@@ -8,13 +8,20 @@ import api from "../utils/api";
 import Search from "../components/search";
 
 const Home = () => {
+    const searchParams = {
+        name: "",
+        kota: "",
+        tipeLapangan: "",
+        lokasi: [],
+        facility: [],
+        minHarga: "",
+        maxHarga: "",
+        page: "5"
+    }
 
-    const { data: dataCourt } = useQuery("getDataCourt",api.getDataCourt, {
-        onError: (error) => {
-            console.log(error)
-        }
-    })
-
+    const {data :searchData} = useQuery(["search", searchParams], () => 
+        api.search(searchParams)
+    )
     return(
         <div className="flex flex-col mb-2 overflow-y-hidden">
             <div className="bg-[#144FCC] h-[74vh] w-full text-white flex justify-between items-center px-7">
@@ -32,7 +39,7 @@ const Home = () => {
             <div 
                 className="content-card grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 w-full px-7 my-5 gap-6"
             >
-                {dataCourt?.map((item :typeDataCourt) => (
+                {searchData?.map((item :typeDataCourt) => (
                     <Card key={item._id} {...item} />
                 ))}
             </div>

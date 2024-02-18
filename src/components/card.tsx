@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AiOutlineLike } from "react-icons/ai";
 import { FaStar } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import NavImgBtn from "./navImageBtn";
 
 export type typeDataCourt = {
@@ -9,16 +9,17 @@ export type typeDataCourt = {
     city: string,
     description: string,
     name: string,
-    pricePerHours: string,
+    minPricePerHours: string,
+    maxPricePerHours: string,
     typeFields: string[],
     imageUrl: string[],
 }
 
-const Card = ({ city, description, name, pricePerHours, typeFields, imageUrl}: typeDataCourt) => {
+const Card = ({ city, description, name, minPricePerHours,maxPricePerHours,  typeFields, imageUrl, _id}: typeDataCourt) => {
     const [navImage, setNavImage] = useState(0)
     const { pathname } =  useLocation();
     const [ locationPage, setLocationPage ] = useState<boolean | undefined>();
-
+    
     useEffect(() => {
         setLocationPage(pathname.slice(1) == "search")
     }, [pathname])
@@ -34,7 +35,7 @@ const Card = ({ city, description, name, pricePerHours, typeFields, imageUrl}: t
     return(
         <div className={`${
             locationPage ? "h-72 w-56" : "h-[360px]"
-        }`}>
+        } my-2`}>
             <div className={`${
                 locationPage ? "h-[70%] rounded" : "h-[75%] rounded-lg"
             } img relative overflow-hidden group w-full`}>
@@ -59,7 +60,9 @@ const Card = ({ city, description, name, pricePerHours, typeFields, imageUrl}: t
                 } desc flex flex-col justify-between my-2`}
             >
                 <div className="flex justify-between tracking-wide text-sm font-semibold">
-                    <h1 className="hover:underline hover:underline-offset-2 cursor-pointer">{name}</h1>
+                    <Link to={`/booking/${_id}`}>
+                        <h1 className="hover:underline hover:underline-offset-2 cursor-pointer">{name}</h1>
+                    </Link>
                     <div className="rating space-x-2 flex items-center">
                         <FaStar />
                         <p>4.5</p>
@@ -72,7 +75,7 @@ const Card = ({ city, description, name, pricePerHours, typeFields, imageUrl}: t
                         locationPage ? "text-xs space-x-1" : "text-sm space-x-2"
                     } flex font-normal text-gray-800`}
                 >
-                    <p>{`${pricePerHours}`}</p>
+                    <p>{`Rp.${minPricePerHours}-Rp.${maxPricePerHours}`}</p>
                     <p>.</p>
                     <p>{city}</p>
                 </div>

@@ -2,23 +2,36 @@ import { IoSearch } from "react-icons/io5";
 import Dropdown from "./dropdown";
 import { useSearchContext } from "../context/search-contex";
 import { FormEvent, useState } from "react";
+import { useQueryClient } from "react-query";
 
-const Search = () => {
+type search = {
+    searchParams: object
+}
+const Search = ({ searchParams}: search) => {
     const search = useSearchContext()
+    const queryClient = useQueryClient();
     const [ name, setNama] = useState<string>(search.name)
     const [ kota, setKota] = useState<string>(search.kota)
     const [ tipeLapangan, setTipeLapangan] = useState<string>(search.tipeLapangan)
-
     const onHandleSearch = (event: FormEvent) => {
         event.preventDefault()
         search.saveSearchValue(name, kota, tipeLapangan)
     }
+
+    const onHandleReset = async () => {
+        setNama("")
+        setKota("")
+        setTipeLapangan("")
+        search.tipeLapangan = ""
+        await queryClient.fetchQuery(["search", searchParams])
+    }
+
     return(
         <div className="search w-full border h-36 rounded-2xl">
             <div className="title text-xs font-semibold flex  justify-center items-center w-full h-1/5 border-b text-zinc-800">
                 <p className="underline underline-offset-[11px] decoration-blue-900">Search Futsal Field</p>
             </div>
-            <div className="flex items-center justify-center h-4/5 px-7">
+            <div className="flex items-center justify-center h-3/5 px-7">
                 <form className="bg-white rounded-full h-[51px] w-full grid grid-cols-4 shadow-3xl border px-2 text-sm divide-x" onSubmit={onHandleSearch}>
                     <input 
                         type="text" 
@@ -45,6 +58,9 @@ const Search = () => {
                         </button>
                     </div>
                 </form>
+            </div>
+            <div className="action h-1/5 ml-7 flex">
+                <button onClick={onHandleReset} className="text-sm text-zinc-500 hover:text-black hover:underline" type="button">Reset</button>
             </div>
         </div>
     )

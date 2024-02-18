@@ -8,6 +8,7 @@ import Register from "./pages/register"
 import MyCourt from "./pages/myCourt"
 import Toast from "./components/toast"
 import EditProfile from "./pages/editProfile"
+import Booking from "./pages/booking"
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path="/login" element={<Login />}  />
           <Route path="/register" element={<Register />}  />
           <Route path="/mycourt" element={<MyCourt />} />
+          <Route path="/booking/:id" element={<Booking />} />
           <Route path="mycourt/editprofile" element={<EditProfile />}  />
         </Routes>
       </div>

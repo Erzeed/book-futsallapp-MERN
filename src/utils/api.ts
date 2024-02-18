@@ -2,14 +2,15 @@ import { FormAddField } from "../components/form/addFieldForm/formField";
 import { LoginType } from "../pages/login";
 import { RegisterType } from "../pages/register";
 
-export type searchParams = {
+export type searchParams ={
     name?: string,
     kota?: string,
     tipeLapangan?: string,
     lokasi?: string[],
     facility?: string[],
     minHarga?: string,
-    maxHarga?: string
+    maxHarga?: string,
+    page?: string
 }
 
 const api = (() => {
@@ -196,6 +197,7 @@ const api = (() => {
         queryParams.append("minHarga", searchParams.minHarga || "")
         queryParams.append("maxHarga", searchParams.maxHarga || "")
         queryParams.append("tipeLapangan", searchParams.tipeLapangan || "")
+        queryParams.append("page", searchParams.page || "");
         searchParams.facility?.forEach((facility) => {
             queryParams.append("facility", facility)
         })
