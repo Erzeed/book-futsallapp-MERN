@@ -68,7 +68,7 @@ const Card = ({ city, description, name, minPricePerHours,maxPricePerHours,  typ
                         <p>4.5</p>
                     </div>
                 </div>
-                <div className="desc h-20 text-wrap truncate flex flex-col justify-center">
+                <div className="desc h-20 text-wrap truncate flex flex-col align-between">
                     <p className="text-xs font-normal text-gray-600 leading-4 tracking-wide">{description}</p>
                 </div>
                 <div className={`${
